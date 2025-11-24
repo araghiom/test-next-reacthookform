@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import "./globals.css";
+import "@/assets/styles/main.css";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import Header from "@/components/templates/header/Header";
+import Footer from "@/components/templates/footer/Footer";
 
 const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
+  src: "../assets/styles/fonts/GeistVF.woff",
   variable: "--font-geist-sans",
   weight: "100 900",
 });
 const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
+  src: "../assets/styles/fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
   weight: "100 900",
 });
@@ -24,11 +27,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <ThemeProvider>
+          <Header />
+          <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]" style={{ minHeight: "calc(100vh - 72px)" }}>
+            <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+              {children}
+            </main>
+          </div>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );
