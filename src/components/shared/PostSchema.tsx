@@ -1,60 +1,77 @@
-import type { BlogPosting, NewsArticle, WithContext } from "schema-dts"
-import { WordpressResponse } from "@/(core)/_types/wordpressTypes"
-import linkGenerator from "@/(core)/_utils/linkGenerator"
+import { postCardType } from "@/types/card.type";
+
+type Author = {
+  name: string;
+  url?: string;
+};
+
+type Publisher = {
+  name: string;
+  logo?: string;
+};
 
 type PostSchemaProps = {
-  post: WordpressResponse
-  postAuthorDetail: any
-  imageSrc: string
-  isArticle: boolean
-}
+  post: postCardType;
+  url: string;
+  description?: string;
+  imageSrc?: string;
+  author?: Author;
+  publisher?: Publisher;
+  datePublished?: string;
+  dateModified?: string;
+  type?: "BlogPosting" | "NewsArticle";
+};
 
-const PostSchema = ({
+export const PostSchema = ({
   post,
-  postAuthorDetail,
+  url,
+  description,
   imageSrc,
-  isArticle,
+  author,
+  publisher,
+  datePublished,
+  dateModified,
+  type = "BlogPosting",
 }: PostSchemaProps) => {
-  const {
-    title: { rendered: postTitle },
-    date,
-    modified,
-    link,
-  } = post
-
-  const jsonLd: WithContext<BlogPosting | NewsArticle> = {
+  const jsonLd = {
     "@context": "https://schema.org",
-    "@type": isArticle ? "BlogPosting" : "NewsArticle",
+    "@type": type,
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `${process.env.NEXT_PUBLIC_WEBSITE_URL}${linkGenerator(link)}`,
+      "@id": url,
     },
-    headline: postTitle,
-    description: `${post.post_meta?.rank_math_description}`,
-    author: {
-      "@type": "Person",
-      name: postAuthorDetail?.name,
-      url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}author/${postAuthorDetail?.slug}`,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "پارسیان کریپتو",
-      logo: {
-        "@type": "ImageObject",
-        url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/parsiancrypto-logo.png`,
+    headline: post.title,
+    description: description || post.body.substring(0, 160),
+    ...(author && {
+      author: {
+        "@type": "Person",
+        name: author.name,
+        ...(author.url && { url: author.url }),
       },
-    },
-    image: [imageSrc],
-    datePublished: date,
-    dateModified: modified,
-  }
+    }),
+    ...(publisher && {
+      publisher: {
+        "@type": "Organization",
+        name: publisher.name,
+        ...(publisher.logo && {
+          logo: {
+            "@type": "ImageObject",
+            url: publisher.logo,
+          },
+        }),
+      },
+    }),
+    ...(imageSrc && { image: [imageSrc] }),
+    ...(datePublished && { datePublished }),
+    ...(dateModified && { dateModified }),
+  };
 
   return (
     <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
     />
-  )
-}
+  );
+};
 
-export default PostSchema
+export default PostSchema;

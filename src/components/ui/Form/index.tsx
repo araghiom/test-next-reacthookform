@@ -124,7 +124,7 @@ const FormControl = forwardRef<
         ? formDescriptionId
         : `${formDescriptionId} ${formMessageId}`,
       "aria-invalid": !!error,
-    } as any);
+    } as React.HTMLAttributes<HTMLElement>);
   }
 
   return (
@@ -197,7 +197,6 @@ export { default as FormRadioGroup } from "./FormRadioGroup";
 export { default as FormCheckboxGroup } from "./FormCheckboxGroup";
 export { default as FormSelect } from "./FormSelect";
 export { default as FormDatePicker } from "./FormDatePicker";
-export { default as FormUpload } from "./FormUpload";
 
 export type { FormInputProps } from "./FormInput";
 export type { FormTextareaProps } from "./FormTextarea";
@@ -210,4 +209,3 @@ export type {
 } from "./FormCheckboxGroup";
 export type { FormSelectProps, SelectOption } from "./FormSelect";
 export type { FormDatePickerProps } from "./FormDatePicker";
-export type { FormUploadProps } from "./FormUpload";

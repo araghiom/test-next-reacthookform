@@ -35,10 +35,10 @@ const FormDatePicker = forwardRef<HTMLDivElement, FormDatePickerProps>(
     };
 
     return (
-      <div ref={ref} className={className}>
+      <div ref={ref} className={`${className || ""} ${disabled ? "pointer-events-none opacity-50" : ""}`}>
         <DatePicker
           value={selectedDay}
-          onChange={handleChange}
+          onChange={disabled ? undefined : handleChange}
           locale={locale}
           shouldHighlightWeekends
           inputPlaceholder={placeholder}
@@ -49,7 +49,6 @@ const FormDatePicker = forwardRef<HTMLDivElement, FormDatePickerProps>(
               : "border-gray-300 focus:border-blue-500 focus:ring-blue-500"
           } ${disabled ? "bg-gray-100 cursor-not-allowed" : ""}`}
           calendarClassName="shadow-lg"
-          disabled={disabled}
         />
       </div>
     );

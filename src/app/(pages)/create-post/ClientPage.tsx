@@ -36,7 +36,7 @@ export default function ClientPage() {
     setSubmitSuccess(false);
 
     try {
-      const response = await createPostRequest(data);
+      await createPostRequest(data);
       setSubmitSuccess(true);
       form.reset();
       setTimeout(() => setSubmitSuccess(false), 3000);

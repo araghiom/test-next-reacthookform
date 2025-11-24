@@ -1,15 +1,12 @@
 import Link from "next/link"
 import ArrowSVG from "@/_assets/icons/chevron-up.svg"
-import BackSVG from "_assets/svg/linkArrow.svg"
 import type { Route } from "next"
 import type { BreadcrumbList, WithContext } from "schema-dts"
 
 const Breadcrumbs = ({
   list,
-  isAnalysis,
 }: {
-  list: { title: string; href: Route | any }[]
-  isAnalysis?: boolean
+  list: { title: string; href: Route | string }[]
 }) => {
   const homeSection = [{ title: "خانه", href: "" as Route }]
   const x = homeSection.concat(list)

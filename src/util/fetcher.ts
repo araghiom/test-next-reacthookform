@@ -22,7 +22,7 @@ const fetcher = async <K>(
       return {
         data: [],
         totalResults: 0,
-      } as any
+      } as K
     }
     // throw new Error(resJson.message);
   }

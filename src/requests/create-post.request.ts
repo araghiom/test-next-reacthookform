@@ -1,4 +1,5 @@
 import { postCardType } from "@/types/card.type";
+import { appConfig } from "@/configs/app.config";
 
 type CreatePostData = {
   userId: number;
@@ -9,7 +10,7 @@ type CreatePostData = {
 export const createPostRequest = async (
   data: CreatePostData
 ): Promise<postCardType> => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`, {
+  const response = await fetch(`${appConfig.apiUrl}/posts`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

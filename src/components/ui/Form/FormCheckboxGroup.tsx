@@ -8,7 +8,10 @@ export interface CheckboxOption {
 }
 
 export interface FormCheckboxGroupProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "onChange"> {
+  extends Omit<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    "type" | "onChange" | "value"
+  > {
   options: CheckboxOption[];
   error?: boolean;
   orientation?: "horizontal" | "vertical";
